@@ -1,0 +1,91 @@
+C51 COMPILER V8.06   KILLDELAY                                                             06/20/2018 09:57:28 PAGE 1   
+
+
+C51 COMPILER V8.06, COMPILATION OF MODULE KILLDELAY
+OBJECT MODULE PLACED IN killDelay.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE killDelay.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include <intrins.h>
+   3          #define uchar unsigned char
+   4          #define uint unsigned int
+   5          
+   6          #define WDT 0X34
+   7          sfr WDT_CONTR = 0XC1;   //ø¥√≈π∑
+   8          sfr CLK_DIV = 0x97; // ±÷”
+   9          sbit DQ=P3^0;
+  10          
+  11          void Delay100ms()               //@11.0592MHz
+  12          {
+  13   1              uchar i, j, k;
+  14   1      
+  15   1              _nop_();
+  16   1              _nop_();
+  17   1              i = 5;
+  18   1              j = 52;
+  19   1              k = 195;
+  20   1              do
+  21   1              {
+  22   2                      do
+  23   2                      {
+  24   3                              while (--k);
+  25   3                      } while (--j);
+  26   2              } while (--i);
+  27   1      }
+  28          void Delay1min()
+  29          {
+  30   1              uint i=600;
+  31   1              do
+  32   1              {
+  33   2                      WDT_CONTR = WDT;
+  34   2                      Delay100ms();
+  35   2              }while(--i);
+  36   1      }
+  37          void Delay1hour()
+  38          {
+  39   1              uint i=60;
+  40   1              do
+  41   1              {
+  42   2                      Delay1min();
+  43   2              }while(--i);
+  44   1      }
+  45          
+  46          void main()
+  47          {
+  48   1              uchar open=2;
+  49   1              uchar close=6;
+  50   1              uchar i,j;
+  51   1              DQ=1;
+  52   1              while(1)
+  53   1              {
+  54   2                      DQ=1;
+  55   2                      i=open,j=close;
+C51 COMPILER V8.06   KILLDELAY                                                             06/20/2018 09:57:28 PAGE 2   
+
+  56   2                      do
+  57   2                      {
+  58   3                              Delay1hour();
+  59   3                      }while(--i);
+  60   2                      DQ=0;
+  61   2                      do
+  62   2                      {
+  63   3                              Delay1hour();
+  64   3                      }while(--j);
+  65   2              }
+  66   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     83    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
